@@ -1,24 +1,25 @@
 import React from 'react';
 import { Menu, X, ChevronDown, ArrowRight, BadgeCheck } from 'lucide-react';
 import { useState } from 'react';
+import { NavLink, Link } from 'react-router-dom';
 
 
 const teamMembers = [
   {
     name: "Sarah Johnson",
-    role: "Founder & CEO",
+    role: "Coach",
     bio: "Former fintech executive with 15 years of experience in digital transformation",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop"
   },
   {
-    name: "Michael Chen",
-    role: "CTO",
+    name: "Ogbeide Oluwatobi",
+    role: "CEO",
     bio: "Tech veteran with background in AI and blockchain technologies",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
   },
   {
     name: "Elena Rodriguez",
-    role: "Head of Design",
+    role: "Coach",
     bio: "Award-winning UX designer passionate about creating intuitive experiences",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop"
   }
@@ -61,30 +62,6 @@ const faqs = [
   }
 ];
 
-const styles = {
-  teamMemberImage: {
-    position: 'relative',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: '-2px',
-      left: '-2px',
-      right: '-2px',
-      bottom: '-2px',
-      border: '2px solid #00D78A',
-      borderRadius: '50%',
-      animation: 'borderAnimation 2s linear infinite'
-    }
-  },
-  '@keyframes borderAnimation': {
-    '0%': { clipPath: 'inset(0 0 98% 0)' },
-    '25%': { clipPath: 'inset(0 98% 0 0)' },
-    '50%': { clipPath: 'inset(98% 0 0 0)' },
-    '75%': { clipPath: 'inset(0 0 0 98%)' },
-    '100%': { clipPath: 'inset(0 0 98% 0)' }
-  }
-} as const;
-
 function Landing() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -105,12 +82,14 @@ function Landing() {
 
             
             <div className="hidden md:flex items-center space-x-4">
-              <button className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">
+              <a href="#team" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Team</a>
+              <NavLink to="" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</NavLink>
+              <NavLink to="/Login"className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">
                 Login
-              </button>
-              <button className="px-4 py-2 bg-[#00D78A] text-white rounded-lg hover:bg-opacity-90 transition-colors">
+             </NavLink>
+              <NavLink to="/SignUp" className="px-4 py-2 bg-[#00D78A] text-white rounded-lg hover:bg-opacity-90 transition-colors">
                 Sign Up
-              </button>
+              </NavLink>
             </div>
 
             <div className="md:hidden">
@@ -125,6 +104,8 @@ function Landing() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <a href="#team" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Team</a>
+              <NavLink to="" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</NavLink>
               <button className="block w-full px-4 py-2 text-[#170C32] hover:text-[#00D78A]">
                 Login
               </button>
@@ -137,7 +118,7 @@ function Landing() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-white">
+      <section className="py-35 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="text-5xl mt-4 md:text-6xl font-bold text-[#170C32] mb-6 animate-fade-in">
           Tired Of Financial Struggles?
@@ -171,14 +152,14 @@ function Landing() {
           </div>
         </div>
 
-        <button className="px-8 py-4 bg-[#00D78A] text-white rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all transform hover:scale-105">
+        <Link to="/signup"><button className="px-8 py-4 bg-[#00D78A] text-white rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all transform hover:scale-105">
           Get Started Now
-        </button>
+        </button></Link>
       </div>
     </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="team" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-[#170C32] mb-16">Meet Our Team</h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -187,7 +168,7 @@ function Landing() {
                 key={index}
                 className="bg-white rounded-xl p-6 shadow-lg transform hover:-translate-y-2 transition-all duration-300"
               >
-                <div className="mb-4 relative w-48 h-48 mx-auto" style={styles.teamMemberImage as any}>
+                <div className="mb-4 relative w-48 h-48 mx-auto">
                   <img
                     src={member.image}
                     alt={member.name}
@@ -263,60 +244,24 @@ function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-[#170C32]">
+      <section className="py-15 bg-[#170C32]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-8">Ready to Get Started?</h2>
           <p className="text-xl text-gray-300 mb-8">
             Join thousands of businesses already transforming their operations with our platform
           </p>
-          <button className="px-8 py-4 bg-[#00D78A] text-white rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all transform hover:scale-105 flex items-center mx-auto">
+          <Link to="/SignUp"><button className="px-8 py-4 bg-[#00D78A] text-white rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all transform hover:scale-105 flex items-center mx-auto">
             Sign Up Now
             <ArrowRight className="ml-2" />
-          </button>
+          </button></Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold text-[#170C32] mb-4">Company</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">About</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Careers</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Press</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-[#170C32] mb-4">Product</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Features</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Pricing</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Security</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-[#170C32] mb-4">Resources</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Blog</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Documentation</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Help Center</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-[#170C32] mb-4">Legal</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Privacy</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Terms</a></li>
-                <li><a href="#" className="text-gray-600 hover:text-[#00D78A]">Cookie Policy</a></li>
-              </ul>
-            </div>
+      <footer className="bg-white py-3">
+          <div className="py-3 text-center">
+            <p className="text-gray-600">© 2025 Affinetsales. All rights reserved.</p>
           </div>
-          <div className="mt-12 pt-8 border-t border-gray-200 text-center">
-            <p className="text-gray-600">© 2025 Affinet. All rights reserved.</p>
-          </div>
-        </div>
       </footer>
     </div>
   );
