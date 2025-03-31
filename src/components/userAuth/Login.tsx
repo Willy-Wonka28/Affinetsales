@@ -14,6 +14,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [message, setMessage] = useState("Logging In...");
 
 
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +67,7 @@ const Login = () => {
         <div className="absolute inset-0 flex items-center justify-center bg-gray-400/20 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
             <MoonLoader color='#00D78A' loading={loading} size={50} />
-            <p className="mt-2 text-gray-700 font-semibold">Logging In...</p>
+            <p className="mt-2 text-gray-700 font-semibold">{message}</p>
           </div>
         </div>
       )}
@@ -118,9 +119,11 @@ const Login = () => {
           </div>
 
           <div className="flex items-center justify-between">
-            <Link to="" className="text-sm text-[#00D78A] hover:text-[#00D78A]">
+            <span 
+            onClick={() => {navigate("/Forgot-Password")}}
+            className="text-sm text-[#00D78A] cursor-pointer hover:text-[#00D78A]">
               Forgot password?
-            </Link>
+            </span>
           </div>
 
           <button

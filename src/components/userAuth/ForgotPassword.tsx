@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../../public/client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
 
-const VerifyEmail = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
 
   const [showError, setShowError] = useState(false);
@@ -20,15 +19,14 @@ const VerifyEmail = () => {
     setMessage("Sending verification email..."); 
     
     try {
-      const { error } = await supabase.auth.resend({
-        type: "signup",
-        email: email,
-      });
       
+      let { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,})
+
       if (error) {
         setMessage(`Error: ${error.message}`);
       } else {
-        setMessage("Verification email sent! Redirecting...");
+        setMessage("Verification email sent! Check your inbox");
       }
     } catch (err: any) {
       setMessage(`Unexpected error: ${err.message}`);
@@ -52,7 +50,7 @@ const VerifyEmail = () => {
       )}
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
         
-      <h1 className="text-2xl font-semibold pb-3">Verify your email address</h1>
+      <h1 className="text-2xl font-semibold pb-3">Enter your email address</h1>
 
         <form className="space-y-4">
           <div className="relative">
@@ -91,4 +89,4 @@ const VerifyEmail = () => {
 };
 
 
-export default VerifyEmail
+export default ForgotPassword
