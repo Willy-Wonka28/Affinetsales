@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../../../public/client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
-
-const projectUrl = import.meta.env.VITE_PROJECT_URL;
-const projectKey = import.meta.env.VITE_PROJECT_KEY;
-const supabase = createClient(projectUrl, projectKey);
 
 interface User {
   email: string;
@@ -84,7 +80,7 @@ const SignUp = () => {
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-400/20 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <MoonLoader color='#00D78A' loading={loading} size={30} />
+            <MoonLoader color='#00D78A' loading={loading} size={50} />
             <p className="mt-2 text-gray-700 font-semibold">Signing Up...</p>
           </div>
         </div>
