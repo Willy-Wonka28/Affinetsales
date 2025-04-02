@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../../public/client/supabase.ts';
+import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../../public/client/supabase.ts';
+import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
 
@@ -36,7 +36,7 @@ const ResetPassword = () => {
     setLoading(false); // Hide spinner
 
     if (data) {
-      navigate("/"); // Redirect if successful
+      navigate("/dashboard"); // Redirect if successful
     }
   };
 

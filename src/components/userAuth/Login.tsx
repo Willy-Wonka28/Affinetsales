@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../../../public/client/supabase.ts';
+import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
 
@@ -56,7 +56,7 @@ const Login = () => {
     setLoading(false); // Hide spinner
 
     if (success) {
-      navigate("/"); // Redirect if signup is successful
+      navigate("/dashboard"); // Redirect if signup is successful
     }
   };
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { supabase } from '../../../public/client/supabase.ts';
+import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
 interface User {
@@ -29,7 +29,10 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
     ]);
 
     if (profileError) {
-      console.error("Error inserting user profile details:", profileError.message);
+      console.error("Error:", profileError.message);
+      if (profileError.message && profileError.message.includes("email")){
+        alert(`There is an error with your email address. Most likely it has been used by another account`);
+      }
       return false; 
     }
 
@@ -70,7 +73,7 @@ const SignUp = () => {
     setLoading(false); // Hide spinner
 
     if (success) {
-      navigate("/"); // Redirect if signup is successful
+      navigate("/dashboard"); // Redirect if signup is successful
     }
   };
 

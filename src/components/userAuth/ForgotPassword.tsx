@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
-import { supabase } from '../../../public/client/supabase.ts';
+import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
 
