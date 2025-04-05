@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Mail } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
 
 const VerifyEmail = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
 
   const [showError, setShowError] = useState(false);
@@ -29,6 +30,8 @@ const VerifyEmail = () => {
         setMessage(`Error: ${error.message}`);
       } else {
         setMessage("Verification email sent! Redirecting...");
+        setLoading(false);
+        navigate("/")
       }
     } catch (err: any) {
       setMessage(`Unexpected error: ${err.message}`);

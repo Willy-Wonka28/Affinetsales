@@ -26,8 +26,8 @@ const Login = () => {
   async function handleSignUp({ email, password }: User): Promise<boolean> {
 
     let { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
+      email: email.trim(),
+      password: password.trim(),
     });
     if (error) {
       console.log("Error", error);
@@ -39,6 +39,7 @@ const Login = () => {
       return false; 
     }
     else{
+  
       return true;
     }
   

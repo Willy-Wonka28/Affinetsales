@@ -18,63 +18,46 @@ import Community from "./pages/Community";
 import Settings from "./pages/Settings";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
+import { createContext, useState } from "react";
+
+interface UserContextType {
+  userName: string | null;
+  setUserName: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
 
 const queryClient = new QueryClient();
+export const userContext = createContext<UserContextType | null>(null);
+const App = () => {
+  const [userName, setUserName] = useState<string | null>(null);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-        <Route path="/" element={<Landing />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/verify" element={<VerifyEmail/>} />
-          <Route path="/forgot-password" element={<ForgotPassword/>} />
-          <Route path="/reset-password" element={<ResetPassword/>} />
-          <Route path="/dashboard" element={
-            <Layout>
-              <Dashboard />
-            </Layout>
-          } />
-          <Route path="/classroom" element={
-            <Layout>
-              <ClassroomPage />
-            </Layout>
-          } />
-          <Route path="/announcements" element={
-            <Layout>
-              <Announcements />
-            </Layout>
-          } />
-          <Route path="/top-earners" element={
-            <Layout>
-              <TopEarners />
-            </Layout>
-          } />
-          <Route path="/community" element={
-            <Layout>
-              <Community />
-            </Layout>
-          } />
-          <Route path="/settings" element={
-            <Layout>
-              <Settings />
-            </Layout>
-          } />
-          <Route path="/contact" element={
-            <Layout>
-              <ContactPage />
-            </Layout>
-          } />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  return (
+    <userContext.Provider value={{ userName, setUserName }}>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/Login" element={<Login />} />
+              <Route path="/SignUp" element={<SignUp />} />
+              <Route path="/verify" element={<VerifyEmail />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+              <Route path="/classroom" element={<Layout><ClassroomPage /></Layout>} />
+              <Route path="/announcements" element={<Layout><Announcements /></Layout>} />
+              <Route path="/top-earners" element={<Layout><TopEarners /></Layout>} />
+              <Route path="/community" element={<Layout><Community /></Layout>} />
+              <Route path="/settings" element={<Layout><Settings /></Layout>} />
+              <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </userContext.Provider>
+  );
+};
+
 
 export default App;

@@ -1,6 +1,7 @@
 
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, {useState, forwardRef} from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { supabase } from '@/client/supabase.ts';
 import {motion, AnimatePresence} from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { 
@@ -12,6 +13,7 @@ import {
   Settings, 
   LogOut,
 } from 'lucide-react';
+import { MoonLoader } from  'react-spinners';
 
 interface NavItem {
   label: string;
@@ -56,16 +58,52 @@ const navItems: NavItem[] = [
   },
 ];
 
-const Sidebar = ({collapse}: SidebarProps) => {
+
+const Sidebar = forwardRef<HTMLElement, SidebarProps>(({ collapse }, ref)  => {
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("Logging Out...")
   const location = useLocation();
+  const navigate = useNavigate()
+  
+  async function handleLogOut(){
+    console.log("Logging out...")
+    setLoading(true)
+    let { error } = await supabase.auth.signOut()
+  
+    if(error){
+      setLoading(false)
+      setMessage("LogOut error")
+      console.log("LogOut error:", error)
+    }
+  
+    if(!error){ 
+      console.log("LogOut successful")
+      setTimeout(() => {
+        navigate("/")
+      }, 3000)
+    }
+   
+  }
+
   
   return (
     <>
-      
-      {/* Sidebar */}
+
+      {loading && (
+        <div className="min-h-screen absolute inset-0 flex items-center justify-center bg-gray-400/20 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+              <MoonLoader color='#00D78A' loading={loading} size={50} />
+              <p className="mt-2 text-gray-700 font-semibold">{message}</p>
+            </div>
+          </div>
+        )}
+
+
+     {/* Sidebar */}
       <AnimatePresence>
       {collapse &&
       <motion.aside
+        ref = {ref}
         initial={{ x: '-100%' }}
         animate={{ x: collapse ? 0 : '-100%' }}
         exit={{ x: '-100%' }}
@@ -81,7 +119,7 @@ const Sidebar = ({collapse}: SidebarProps) => {
               const isActive = location.pathname === item.href;
               const index = navItems.indexOf(item)
               return (
-                <motion.li key={item.label}
+                <motion.li key={item.href}
                 initial={{ x: '-100%' }}
                 animate={{ x: collapse ? 0 : '-100%' }}
                 exit={{ x: '-100%' }}
@@ -104,18 +142,19 @@ const Sidebar = ({collapse}: SidebarProps) => {
         </nav>
 
         <div className="p-4 border-t border-white/10">
-          <Link
-            to="/logout"
+          <button
             className="sidebar-link text-white hover:text-red-500"
-          >
+            onClick={(e) =>{
+              e.preventDefault()
+              handleLogOut()}}>
             <LogOut className="w-5 h-5" />
             <span>Logout</span>
-          </Link>
+          </button>
         </div>
       </motion.aside>}
       </AnimatePresence>
     </>
   );
-};
+});
 
 export default Sidebar;

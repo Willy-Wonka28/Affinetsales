@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Mail } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
+import {userContext} from '@/App'
 
 interface User {
   email: string;
@@ -11,10 +12,18 @@ interface User {
   lastName: string;
 }
 
+
 async function handleSignUp({ email, password, firstName, lastName }: User): Promise<boolean> {
+  const {setUserName} = useContext(userContext)
+
   let { data, error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
+    email: email.trim(),
+    password: password.trim(),
+    options: {
+      data: {
+        first_name: firstName.trim()
+      }
+    }
   });
 
   if (error) {
@@ -25,7 +34,7 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
 
   if (data.user) {
     const { error: profileError } = await supabase.from("profiles").insert([
-      { user_id: data.user.id, first_name: firstName, last_name: lastName, email: email },
+      { user_id: data.user.id.trim(), first_name: firstName.trim(), last_name: lastName.trim(), email: email.trim() },
     ]);
 
     if (profileError) {
@@ -36,7 +45,9 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
       return false; 
     }
 
+    setUserName(firstName.trim())
     console.log("Profile created successfully!");
+
     return true; 
   }
 
@@ -44,6 +55,8 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
 }
 
 const SignUp = () => {
+
+
   const navigate = useNavigate(); 
 
   // Form States
