@@ -14,7 +14,7 @@ interface User {
 
 
 async function handleSignUp({ email, password, firstName, lastName }: User): Promise<boolean> {
-  const {setUserName} = useContext(userContext)
+  
 
   let { data, error } = await supabase.auth.signUp({
     email: email.trim(),
@@ -45,7 +45,6 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
       return false; 
     }
 
-    setUserName(firstName.trim())
     console.log("Profile created successfully!");
 
     return true; 
@@ -56,7 +55,7 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
 
 const SignUp = () => {
 
-
+  const {setUserName} = useContext(userContext)
   const navigate = useNavigate(); 
 
   // Form States
@@ -178,7 +177,10 @@ const SignUp = () => {
             className={`w-full bg-[#00D78A] text-white rounded-lg px-4 py-3 font-semibold ${
               !isFormValid ? "bg-gray-400 cursor-not-allowed" : ""
             }`}
-            onClick={handleSignupClick}
+            onClick={(e) => {
+              setUserName(firstName.trim());
+              handleSignupClick(e);
+            }}
             disabled={!isFormValid || loading}
           >
             Sign Up
