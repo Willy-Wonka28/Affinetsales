@@ -132,12 +132,12 @@ const Settings = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" onChange={handleFirstName} value={firstName ? firstName : ''} required/>
+                      <Input id="firstName" onChange={handleFirstName} value={editFirstName} defaultValue={firstName ? firstName : ''} required/>
                       <p className="text-xs text-muted-foreground">This is the name that will be shown to others in the community</p>
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" onChange={handleLastName} value={lastName ? lastName : ''} required/>
+                      <Input id="lastName" onChange={handleLastName} value={editLastName} defaultValue={lastName ? lastName : ''} required/>
                     </div>
                   </div>
 {/*                   
