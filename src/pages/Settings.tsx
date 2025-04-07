@@ -306,7 +306,7 @@ const Settings = () => {
   <div className="space-y-4 p-4 border rounded-lg">
     {passwordLoading && (
       <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <div className="bg-white h-screen p-6 rounded-lg shadow-lg flex flex-col items-center">
           <MoonLoader color='#00D78A' loading={passwordLoading} size={50} />
           <p className="mt-2 font-semibold">{passwordMessage}</p>
         </div>
@@ -336,7 +336,7 @@ const Settings = () => {
     <Button
       onClick={initiatePasswordChange}
       disabled={!emailRegex.test(passwordEmail) || passwordLoading}
-      className="bg-brand-green hover:bg-brand-green/90 w-full"
+      className="bg-brand-green hover:bg-brand-green/90"
     >
       Send Reset Link
     </Button>
