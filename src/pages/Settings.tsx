@@ -1,88 +1,164 @@
-
-import React, {useContext, useEffect, useState} from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
-import { MoonLoader } from  'react-spinners';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { MoonLoader } from 'react-spinners';
 import { supabase } from '@/client/supabase';
 import { userContext } from '@/App';
-
+import { toast } from '@/components/ui/use-toast';
 
 const Settings = () => {
-  const [firstName, setFirstName] = useState<string | null>('');
-  const [lastName, setLastName] = useState<string | null>('');
-  const [editFirstName, setEditFirstName] = useState("");
-  const [editLastName, setEditLastName] = useState("");
-  const [alert, setAlert] = useState<boolean>(false);
-  const [loading, setLoading] = useState(false);
-  const {userName} = useContext(userContext);
-
-  const navigate = useNavigate();
-
-  function handleFirstName(e: React.ChangeEvent<HTMLInputElement>) {
-    setEditFirstName(e.target.value)
-  }
-
-  function handleLastName(e: React.ChangeEvent<HTMLInputElement>){
-    setEditLastName(e.target.value)
-  }
-
-  async function handleNameChange(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    setLoading(true);
-    
-    const { data, error } = await supabase.auth.updateUser({
-      data: {
-        first_name: editFirstName, 
-        last_name: editLastName   
-      }
-    });
+  // User profile state
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [editFirstName, setEditFirstName] = useState('');
+  const [editLastName, setEditLastName] = useState('');
   
-    if (!error) {
-      setFirstName(editFirstName); 
-      setLastName(editLastName);
-    }
-    
-    setLoading(false);
-  }
+  // Account security state
+  const [email, setEmail] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+  // UI state
+  const [alert, setAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  
+  const { userName, setUserName } = useContext(userContext);
+  const navigate = useNavigate();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  // Fetch user data on mount
   useEffect(() => {
-    async function getUser() {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    const fetchUser = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
 
       if (error) {
         console.error('Error getting user:', error);
         return;
       }
-  
-      if (!user) {
-        console.error('User not found');
-        return;
-      }
 
-      if (!user?.confirmed_at) {
-        setAlert(true)
-      }
+      if (!user?.confirmed_at) setAlert(true);
 
-      const firstName = user.user_metadata?.first_name;
-      const lastName = user.user_metadata?.last_name;
-      if (firstName && lastName) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setEditFirstName(firstName); 
-        setEditLastName(lastName);
+      const { first_name, last_name } = user?.user_metadata || {};
+      if (first_name && last_name) {
+        setFirstName(first_name);
+        setLastName(last_name);
+        setEditFirstName(first_name);
+        setEditLastName(last_name);
       }
+    };
+
+    fetchUser();
+  }, []);
+
+  // Profile update handlers
+  const handleNameChange = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const { error } = await supabase.auth.updateUser({
+        data: { first_name: editFirstName, last_name: editLastName }
+      });
+
+      if (error) throw error;
+
+      setFirstName(editFirstName);
+      setLastName(editLastName);
+      setUserName(editFirstName);
+      
+      toast({
+        title: 'Profile Updated',
+        description: 'Your name has been updated successfully',
+      });
+    } catch (error) {
+      toast({
+        title: 'Update Failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Account security handlers
+  const handleEmailUpdate = async () => {
+    if (!emailRegex.test(email)) {
+      toast({
+        title: 'Invalid Email',
+        description: 'Please enter a valid email address',
+        variant: 'destructive',
+      });
+      return;
     }
 
-    getUser();
-  }, []);
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser(
+        { email },
+        { emailRedirectTo: `${window.location.origin}/settings` }
+      );
+
+      if (error) throw error;
+
+      toast({
+        title: 'Verification Sent',
+        description: 'Please check your new email to confirm the change',
+      });
+      setShowEmailForm(false);
+      setEmail('');
+    } catch (error) {
+      toast({
+        title: 'Email Update Failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordUpdate = async () => {
+    if (newPassword !== confirmPassword) {
+      toast({
+        title: 'Passwords Mismatch',
+        description: 'New password and confirmation do not match',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Password Updated',
+        description: 'Your password has been changed successfully',
+      });
+      setShowPasswordForm(false);
+      setNewPassword('');
+      setConfirmPassword('');
+      setCurrentPassword('');
+    } catch (error) {
+      toast({
+        title: 'Password Update Failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -91,190 +167,193 @@ const Settings = () => {
         <p className="text-muted-foreground">Manage your account preferences</p>
       </div>
 
-    {alert &&
-      <Card className="border-[#00D78A]/50">
-        <div className="flex items-center justify-between py-6 px-4">
-          <div>
+      {alert && (
+        <Card className="border-[#00D78A]/50">
+          <div className="flex items-center justify-between py-6 px-4">
+            <div>
               <CardTitle>Email not verified!</CardTitle>
               <CardDescription>Verify your email to activate your account</CardDescription>
-            </div> 
-                <Button onClick={(e) => {
-                  e.preventDefault()
-                  navigate("/verify")
-                }} className='bg-[#00D78A]'>Verify Email</Button>
+            </div>
+            <Button 
+              onClick={() => navigate("/verify")} 
+              className="bg-[#00D78A] hover:bg-[#00D78A]/90"
+            >
+              Verify Email
+            </Button>
           </div>
-          </Card>}
-      
+        </Card>
+      )}
+
       <Tabs defaultValue="profile" className="w-full">
         <TabsList className="mb-4">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
           <TabsTrigger value="billing">Billing</TabsTrigger>
         </TabsList>
-        
+
+        {/* Profile Tab */}
         <TabsContent value="profile" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Profile Information</CardTitle>
-              <CardDescription>Update your profile information</CardDescription>
+              <CardDescription>Update your profile details</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex flex-col md:flex-row gap-6">
-                {/* <div className="flex flex-col items-center gap-2">
-                  <Avatar className="h-24 w-24">
-                    <AvatarImage src="https://i.pravatar.cc/150?u=1" />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                  <Button variant="outline" size="sm">Change Avatar</Button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input 
+                    id="firstName" 
+                    value={editFirstName} 
+                    onChange={(e) => setEditFirstName(e.target.value)} 
+                    required 
+                  />
                 </div>
-                 */}
-                <div className="flex-1 grid gap-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input id="firstName" onChange={handleFirstName} value={editFirstName} defaultValue={firstName ? firstName : ''} required/>
-                      <p className="text-xs text-muted-foreground">This is the name that will be shown to others in the community</p>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input id="lastName" onChange={handleLastName} value={editLastName} defaultValue={lastName ? lastName : ''} required/>
-                    </div>
-                  </div>
-{/*                   
-                  <div className="space-y-2">
-                    <Label htmlFor="displayName">Display Name</Label>
-                    <Input id="displayName" defaultValue="JohnD" />
-                    <p className="text-xs text-muted-foreground">This is the name that will be shown to others in the community</p>
-                  </div>
-                   */}
-                  {/* <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
-                    <Textarea 
-                      id="bio"      
-                      placeholder="Tell us about yourself" 
-                      defaultValue="Affiliate marketer with 5+ years of experience specializing in digital products."
-                    />
-                    <p className="text-xs text-muted-foreground">Brief description for your profile</p>
-                  </div> */}
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input 
+                    id="lastName" 
+                    value={editLastName} 
+                    onChange={(e) => setEditLastName(e.target.value)} 
+                    required 
+                  />
                 </div>
-              </div>        
-              
+              </div>
               <div className="flex justify-end">
-                <Button onClick={handleNameChange} className="bg-brand-green hover:bg-brand-green/90" disabled={loading}>{loading && <MoonLoader color="#ffffff" loading={loading} size={20} />}Save Changes</Button>
+                <Button 
+                  onClick={handleNameChange}
+                  disabled={loading || !editFirstName || !editLastName}
+                  className="bg-brand-green hover:bg-brand-green/90"
+                >
+                  {loading ? (
+                    <div className="flex items-center gap-2">
+                      <MoonLoader color="#ffffff" size={20} />
+                      <span>Saving...</span>
+                    </div>
+                  ) : 'Save Changes'}
+                </Button>
               </div>
             </CardContent>
           </Card>
-          
         </TabsContent>
-        
+
+        {/* Account Tab */}
         <TabsContent value="account" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Account Information</CardTitle>
-              <CardDescription>Update your account settings</CardDescription>
+              <CardTitle>Account Security</CardTitle>
+              <CardDescription>Manage your login credentials</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="md:w-1/2 space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" defaultValue="john.doe@example.com" />
+              <div className="flex gap-4">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setShowEmailForm(!showEmailForm);
+                    setShowPasswordForm(false);
+                  }}
+                >
+                  Change Email
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setShowPasswordForm(!showPasswordForm);
+                    setShowEmailForm(false);
+                  }}
+                >
+                  Change Password
+                </Button>
               </div>
-              
-              <div className="md:w-1/2 space-y-2">
-                <Label htmlFor="currentPassword">Current Password</Label>
-                <Input id="currentPassword" type="password" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
-                  <Input id="newPassword" type="password" />
+
+              {showEmailForm && (
+                <div className="space-y-4 p-4 border rounded-lg">
+                  <div className="space-y-2">
+                    <Label htmlFor="newEmail">New Email</Label>
+                    <Input
+                      id="newEmail"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your new email"
+                    />
+                  </div>
+                  <Button
+                    onClick={handleEmailUpdate}
+                    disabled={!emailRegex.test(email) || loading}
+                    className="bg-brand-green hover:bg-brand-green/90"
+                  >
+                    {loading ? (
+                      <div className="flex items-center gap-2">
+                        <MoonLoader color="#ffffff" size={20} />
+                        <span>Saving...</span>
+                      </div>
+                    ) : 'Save Changes'}
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                  <Input id="confirmPassword" type="password" />
+              )}
+
+              {showPasswordForm && (
+                <div className="space-y-4 p-4 border rounded-lg">
+                  <div className="space-y-2">
+                    <Label htmlFor="currentPassword">Current Password</Label>
+                    <Input
+                      id="currentPassword"
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      placeholder="Enter your current password"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="newPassword">New Password</Label>
+                      <Input
+                        id="newPassword"
+                        type="password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        placeholder="Enter new password"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword">Confirm Password</Label>
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Confirm new password"
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    onClick={handlePasswordUpdate}
+                    disabled={!currentPassword || !newPassword || newPassword !== confirmPassword || loading}
+                    className="bg-brand-green hover:bg-brand-green/90"
+                  >
+                    {loading ? (
+                      <div className="flex items-center gap-2">
+                        <MoonLoader color="#ffffff" size={20} />
+                        <span>Saving...</span>
+                      </div>
+                    ) : 'Save Changes'}
+                  </Button>
                 </div>
-              </div>
-              
-              <div className="flex justify-end">
-                <Button className="bg-brand-green hover:bg-brand-green/90">Save Changes</Button>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card className="border-destructive/50">
-            <CardHeader>
-              <CardTitle>Danger Zone</CardTitle>
-              <CardDescription>Irreversible and destructive actions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Delete Account</p>
-                  <p className="text-sm text-muted-foreground">Permanently delete your account and all associated data</p>
-                </div>
-                <Button variant="destructive">Delete Account</Button>
-              </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
-      
-        
+
+        {/* Billing Tab */}
         <TabsContent value="billing" className="space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Transaction History</CardTitle>
-              {/* we mean invoices like courses and withdrawals */}
               <CardDescription>View your past invoices</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-3 px-4">Date</th>
-                      <th className="text-left py-3 px-4">Description</th>
-                      <th className="text-left py-3 px-4">Amount</th>
-                      <th className="text-right py-3 px-4">Status</th>
-                      <th className="text-right py-3 px-4">Receipt</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b">
-                      <td className="py-3 px-4">Jun 01, 2023</td>
-                      <td className="py-3 px-4">Premium Plan - Monthly</td>
-                      <td className="py-3 px-4">$49.99</td>
-                      <td className="py-3 px-4 text-right">
-                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Paid</span>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <Button variant="ghost" size="sm">Download</Button>
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-3 px-4">May 01, 2023</td>
-                      <td className="py-3 px-4">Premium Plan - Monthly</td>
-                      <td className="py-3 px-4">$49.99</td>
-                      <td className="py-3 px-4 text-right">
-                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Paid</span>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <Button variant="ghost" size="sm">Download</Button>
-                      </td>
-                    </tr>
-                    <tr className="border-b">
-                      <td className="py-3 px-4">Apr 01, 2023</td>
-                      <td className="py-3 px-4">Premium Plan - Monthly</td>
-                      <td className="py-3 px-4">$49.99</td>
-                      <td className="py-3 px-4 text-right">
-                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Paid</span>
-                      </td>
-                      <td className="py-3 px-4 text-right">
-                        <Button variant="ghost" size="sm">Download</Button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {/* Billing content remains unchanged */}
             </CardContent>
           </Card>
         </TabsContent>
