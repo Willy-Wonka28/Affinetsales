@@ -43,7 +43,7 @@ const Login = () => {
       toast({
         title: "Login Successful",
         description: "Welcome to Affinetsales",
-        duration: 3000
+        duration: 2000
       });
       return true;
     }
@@ -90,6 +90,7 @@ const Login = () => {
         <form className="space-y-4">
           <div className="relative">
             <input
+              required
               type="email"
               placeholder="Email"
               onChange={(e) => {
@@ -110,6 +111,7 @@ const Login = () => {
 
           <div className="relative">
             <input
+              required
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}

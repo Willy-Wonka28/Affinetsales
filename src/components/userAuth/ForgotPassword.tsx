@@ -55,6 +55,7 @@ const ForgotPassword = () => {
         <form className="space-y-4">
           <div className="relative">
             <input
+             required
               type="email"
               placeholder="Email"
               onChange={(e) => {

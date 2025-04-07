@@ -6,26 +6,8 @@ import { supabase } from '@/client/supabase';
 import {userContext} from '@/App'
 
 const Dashboard = () => {
-  const {userName, setUserName} = useContext(userContext);
+  const {userName} = useContext(userContext);
   
-  useEffect(() => {
-    async function getUser() {
-      const { data: { user }, error } = await supabase.auth.getUser();
-
-      if (error || !user) {
-        console.error('Error getting user:', error);
-        return;
-      }
-
-      const firstName = user.user_metadata?.first_name;
-      if (firstName) {
-        setUserName(firstName);
-      }
-    }
-
-    getUser();
-  }, []);
-
 
   return (
     <div className="space-y-6">

@@ -65,6 +65,7 @@ const ResetPassword = () => {
      
           <div className="relative">
             <input
+             required
               type={showPassword ? "text" : "password"}
               placeholder="New Password"
               onChange={(e) => setPassword(e.target.value)}

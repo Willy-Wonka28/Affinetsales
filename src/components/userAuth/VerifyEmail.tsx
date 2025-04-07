@@ -29,7 +29,7 @@ const VerifyEmail = () => {
       if (error) {
         setMessage(`Error: ${error.message}`);
       } else {
-        setMessage("Verification email sent! Redirecting...");
+        setMessage("Verification email sent! Redirecting to Home Page...");
         setLoading(false);
         navigate("/")
       }
@@ -60,6 +60,7 @@ const VerifyEmail = () => {
         <form className="space-y-4">
           <div className="relative">
             <input
+             required
               type="email"
               placeholder="Email"
               onChange={(e) => {

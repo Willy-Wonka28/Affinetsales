@@ -17,7 +17,8 @@ import TopEarners from "./pages/TopEarners";
 import Settings from "./pages/Settings";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import { supabase } from '@/client/supabase';
 
 interface UserContextType {
   userName: string | null;
@@ -26,12 +27,67 @@ interface UserContextType {
 
 
 const queryClient = new QueryClient();
-export const userContext = createContext<UserContextType | null>(null);
+export const userContext = createContext<UserContextType>({
+  userName: null,
+  setUserName: ()=>{}
+});
 const App = () => {
   const [userName, setUserName] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+
+  useEffect(() => {
+    const checkSession = async () => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (session) {
+        setIsAuthenticated(true);
+        console.log(session)
+        const firstName = session.user.user_metadata?.first_name;
+        console.log(firstName);
+        if (firstName) {
+          setUserName(firstName);
+        }
+      }
+      
+    };
+
+    //auth state listener
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log('Auth state changed:', event);
+        
+        if (event === 'SIGNED_IN' && session) {
+          setIsAuthenticated(true);
+          const firstName = session.user.user_metadata?.first_name;
+          if (firstName) {
+            setUserName(firstName);
+          }
+        } else if (event === 'SIGNED_OUT') {
+          setIsAuthenticated(false);
+          setUserName(null);
+        } else if (event === 'USER_UPDATED' && session) {
+
+          const firstName = session.user.user_metadata?.first_name;
+          if (firstName) {
+            setUserName(firstName);
+          }
+        }
+      }
+    );
+
+
+    checkSession();
+
+    // Cleanup
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
-    <userContext.Provider value={{ userName, setUserName }}>
+    <userContext.Provider value={{ userName: userName, setUserName }}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />

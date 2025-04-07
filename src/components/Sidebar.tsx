@@ -46,11 +46,11 @@ const navItems: NavItem[] = [
     icon: <TrendingUp className="w-5 h-5" />,
     href: '/top-earners',
   },
-  {
-    label: 'Community',
-    icon: <Users className="w-5 h-5" />,
-    href: '/community',
-  },
+  // {
+  //   label: 'Community',
+  //   icon: <Users className="w-5 h-5" />,
+  //   href: '/community',
+  // },
   {
     label: 'Settings',
     icon: <Settings className="w-5 h-5" />,

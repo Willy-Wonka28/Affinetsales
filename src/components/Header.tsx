@@ -12,6 +12,8 @@ const Header = () => {
   const {userName} = useContext(userContext);
   const[collapse, setCollapse] = useState(false)
 
+  console.log(userName);
+  
   function handleCollapse(){
     setCollapse(!collapse)
   
@@ -20,7 +22,7 @@ const Header = () => {
   const sideBarRef = useRef(null);
 
   function handleOutsideClick(e: MouseEvent) {
-    if(!sideBarRef.current.contains(e.target)){
+    if(sideBarRef.current && !sideBarRef.current.contains(e.target)){
       setCollapse(false)
     }
   }

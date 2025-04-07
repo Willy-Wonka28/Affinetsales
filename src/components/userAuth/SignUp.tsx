@@ -14,55 +14,9 @@ interface User {
 }
 
 
-async function handleSignUp({ email, password, firstName, lastName }: User): Promise<boolean> {
-  
-
-  let { data, error } = await supabase.auth.signUp({
-    email: email.trim(),
-    password: password.trim(),
-    options: {
-      data: {
-        first_name: firstName.trim()
-      }
-    }
-  });
-
-  if (error) {
-    console.log("Error", error);
-    alert(`Error: ${error.message}`);
-    return false; 
-  }
-
-  if (data.user) {
-    toast({
-      title: "SignUp Successful",
-      description: "Welcome to Affinetsales",
-      duration: 3000
-    });
-    const { error: profileError } = await supabase.from("profiles").insert([
-      { user_id: data.user.id.trim(), first_name: firstName.trim(), last_name: lastName.trim(), email: email.trim() },
-    ]);
-
-    if (profileError) {
-      console.error("Error:", profileError.message);
-      if (profileError.message && profileError.message.includes("email")){
-        alert(`There is an error with your email address. Most likely it has been used by another account`);
-      }
-      return false; 
-    }
-
-    console.log("Profile created successfully!");
-
-    return true; 
-  }
-
-  return false;
-}
-
 const SignUp = () => {
-
-  const {setUserName} = useContext(userContext)
   const navigate = useNavigate(); 
+  const {setUserName} = useContext(userContext)
 
   // Form States
   const [firstName, setFirstName] = useState('');
@@ -79,6 +33,42 @@ const SignUp = () => {
 
   // Disable button if any field is empty
   const isFormValid = firstName && lastName && email && password && confirmPassword && password === confirmPassword;
+
+
+async function handleSignUp({ email, password, firstName, lastName }: User): Promise<boolean> {
+
+  let { data, error } = await supabase.auth.signUp({
+    email: email.trim(),
+    password: password.trim(),
+    options: {
+      data: {
+        first_name: firstName.trim(),
+        last_name: lastName.trim()
+      }
+    }
+  });
+
+  if (error) {
+    console.log("Error", error);
+    alert(`Error: ${error.message}`);
+    return false; 
+  }
+
+  if (!error) {
+    setUserName(firstName);
+    toast({
+      title: "SignUp Successful",
+      description: "Welcome to Affinetsales. Check your email to verify your account",  
+      duration: 2000
+    });
+    console.log("Profile created successfully!");
+
+    return true; 
+  }
+
+  return false;
+}
+
 
   const handleSignupClick = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -117,13 +107,14 @@ const SignUp = () => {
 
         <form className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <input type="text" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} className="input px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00D78A] focus:border-transparent" />
-            <input type="text" placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} className="input px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00D78A] focus:border-transparent" />
+            <input type="text" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} className="input px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00D78A] focus:border-transparent"  required />
+            <input type="text" placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} className="input px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00D78A] focus:border-transparent"  required />
           </div>
 
           
           <div className="relative">
             <input
+             required
               type="email"
               placeholder="Email"
               onChange={(e) => {
@@ -145,6 +136,7 @@ const SignUp = () => {
       
           <div className="relative">
             <input
+             required
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
@@ -161,6 +153,7 @@ const SignUp = () => {
 
           <div className="relative">
             <input
+             required
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm Password"
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -184,7 +177,6 @@ const SignUp = () => {
               !isFormValid ? "bg-gray-400 cursor-not-allowed" : ""
             }`}
             onClick={(e) => {
-              setUserName(firstName.trim());
               handleSignupClick(e);
             }}
             disabled={!isFormValid || loading}
