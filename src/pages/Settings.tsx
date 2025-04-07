@@ -305,8 +305,8 @@ const Settings = () => {
 {showPasswordForm && (
   <div className="space-y-4 p-4 border rounded-lg">
     {passwordLoading && (
-      <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
-        <div className="bg-white h-screen p-6 rounded-lg shadow-lg flex flex-col items-center">
+      <div className="fixed inset-0 h-screen flex items-center justify-center bg-black/30 z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
           <MoonLoader color='#00D78A' loading={passwordLoading} size={50} />
           <p className="mt-2 font-semibold">{passwordMessage}</p>
         </div>
