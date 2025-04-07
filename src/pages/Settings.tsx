@@ -160,7 +160,7 @@ const Settings = () => {
               </div>        
               
               <div className="flex justify-end">
-                <Button onClick={handleNameChange} className="bg-brand-green hover:bg-brand-green/90" disabled={loading}>{loading && <MoonLoader color="#ffffff" loading={loading} size={5} />}Save Changes</Button>
+                <Button onClick={handleNameChange} className="bg-brand-green hover:bg-brand-green/90" disabled={loading}>{loading && <MoonLoader color="#ffffff" loading={loading} size={20} />}Save Changes</Button>
               </div>
             </CardContent>
           </Card>

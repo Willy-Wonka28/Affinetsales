@@ -43,7 +43,6 @@ const App = () => {
       
       if (session) {
         setIsAuthenticated(true);
-        console.log(session)
         const firstName = session.user.user_metadata?.first_name;
         console.log(firstName);
         if (firstName) {
