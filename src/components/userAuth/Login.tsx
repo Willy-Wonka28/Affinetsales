@@ -43,7 +43,7 @@ const Login = () => {
       toast({
         title: "Login Successful",
         description: "Welcome to Affinetsales",
-        duration: 2000
+        duration: 2000,
       });
       return true;
     }
