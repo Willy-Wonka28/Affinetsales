@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -19,9 +20,10 @@ const Settings = () => {
   
   // Account security state
   const [email, setEmail] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordEmail, setPasswordEmail] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   
   // UI state
   const [alert, setAlert] = useState(false);
@@ -125,41 +127,48 @@ const Settings = () => {
     }
   };
 
-  const handlePasswordUpdate = async () => {
-    if (newPassword !== confirmPassword) {
+
+  const initiatePasswordChange = async () => {
+    if (!emailRegex.test(passwordEmail)) {
       toast({
-        title: 'Passwords Mismatch',
-        description: 'New password and confirmation do not match',
+        title: 'Invalid Email',
+        description: 'Please enter a valid email address',
         variant: 'destructive',
       });
       return;
     }
-
-    setLoading(true);
+  
+    setPasswordLoading(true);
+    setPasswordMessage("Sending password reset link...");
+    
     try {
-      const { error } = await supabase.auth.updateUser({ password: newPassword });
-
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        passwordEmail,
+        { redirectTo: `${window.location.origin}/update-password` }
+      );
+  
       if (error) throw error;
-
+  
+      setPasswordMessage("Password reset link sent! Check your email inbox");
       toast({
-        title: 'Password Updated',
-        description: 'Your password has been changed successfully',
+        title: 'Email Sent',
+        description: 'Check your email for the password reset link',
       });
-      setShowPasswordForm(false);
-      setNewPassword('');
-      setConfirmPassword('');
-      setCurrentPassword('');
     } catch (error) {
+      setPasswordMessage(`Error: ${error.message}`);
       toast({
-        title: 'Password Update Failed',
+        title: 'Failed to send reset link',
         description: error.message,
         variant: 'destructive',
       });
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setPasswordLoading(false);
+        setShowPasswordForm(false);
+      }, 1500);
     }
   };
-
+  
   return (
     <div className="space-y-6">
       <div>
@@ -293,54 +302,50 @@ const Settings = () => {
                 </div>
               )}
 
-              {showPasswordForm && (
-                <div className="space-y-4 p-4 border rounded-lg">
-                  <div className="space-y-2">
-                    <Label htmlFor="currentPassword">Current Password</Label>
-                    <Input
-                      id="currentPassword"
-                      type="password"
-                      value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
-                      placeholder="Enter your current password"
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="newPassword">New Password</Label>
-                      <Input
-                        id="newPassword"
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        placeholder="Enter new password"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="confirmPassword">Confirm Password</Label>
-                      <Input
-                        id="confirmPassword"
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Confirm new password"
-                      />
-                    </div>
-                  </div>
-                  <Button
-                    onClick={handlePasswordUpdate}
-                    disabled={!currentPassword || !newPassword || newPassword !== confirmPassword || loading}
-                    className="bg-brand-green hover:bg-brand-green/90"
-                  >
-                    {loading ? (
-                      <div className="flex items-center gap-2">
-                        <MoonLoader color="#ffffff" size={20} />
-                        <span>Saving...</span>
-                      </div>
-                    ) : 'Save Changes'}
-                  </Button>
-                </div>
-              )}
+{showPasswordForm && (
+  <div className="space-y-4 p-4 border rounded-lg">
+    {passwordLoading && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+          <MoonLoader color='#00D78A' loading={passwordLoading} size={50} />
+          <p className="mt-2 font-semibold">{passwordMessage}</p>
+        </div>
+      </div>
+    )}
+    
+    <div className="space-y-2">
+      <Label htmlFor="passwordEmail">Email Address</Label>
+      <div className="relative">
+        <Input
+          id="passwordEmail"
+          type="email"
+          value={passwordEmail}
+          onChange={(e) => {
+            setPasswordEmail(e.target.value);
+            setShowError(!emailRegex.test(e.target.value));
+          }}
+          placeholder="Enter your account email"
+        />
+        <Mail className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+      </div>
+      {showError && (
+        <p className="text-red-500 text-sm">Please enter a valid email address</p>
+      )}
+    </div>
+    
+    <Button
+      onClick={initiatePasswordChange}
+      disabled={!emailRegex.test(passwordEmail) || passwordLoading}
+      className="bg-brand-green hover:bg-brand-green/90 w-full"
+    >
+      Send Reset Link
+    </Button>
+    
+    <p className="text-sm text-muted-foreground">
+      We'll send a secure link to your email to update your password
+    </p>
+  </div>
+)}
             </CardContent>
           </Card>
         </TabsContent>
@@ -350,10 +355,58 @@ const Settings = () => {
           <Card>
             <CardHeader>
               <CardTitle>Transaction History</CardTitle>
+              {/* we mean invoices like courses and withdrawals */}
               <CardDescription>View your past invoices</CardDescription>
             </CardHeader>
             <CardContent>
-              {/* Billing content remains unchanged */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4">Date</th>
+                      <th className="text-left py-3 px-4">Description</th>
+                      <th className="text-left py-3 px-4">Amount</th>
+                      <th className="text-right py-3 px-4">Status</th>
+                      <th className="text-right py-3 px-4">Receipt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b">
+                      <td className="py-3 px-4">Jun 01, 2023</td>
+                      <td className="py-3 px-4">Premium Plan - Monthly</td>
+                      <td className="py-3 px-4">$49.99</td>
+                      <td className="py-3 px-4 text-right">
+                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Paid</span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <Button variant="ghost" size="sm">Download</Button>
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-3 px-4">May 01, 2023</td>
+                      <td className="py-3 px-4">Premium Plan - Monthly</td>
+                      <td className="py-3 px-4">$49.99</td>
+                      <td className="py-3 px-4 text-right">
+                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Paid</span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <Button variant="ghost" size="sm">Download</Button>
+                      </td>
+                    </tr>
+                    <tr className="border-b">
+                      <td className="py-3 px-4">Apr 01, 2023</td>
+                      <td className="py-3 px-4">Premium Plan - Monthly</td>
+                      <td className="py-3 px-4">$49.99</td>
+                      <td className="py-3 px-4 text-right">
+                        <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Paid</span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <Button variant="ghost" size="sm">Download</Button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
