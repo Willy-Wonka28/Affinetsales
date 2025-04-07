@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from "@/components/ui/use-toast";
 import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
 
@@ -36,6 +37,11 @@ const ResetPassword = () => {
     setLoading(false); // Hide spinner
 
     if (data) {
+      toast({
+        title: "Password Reset Successful",
+        description: "",
+        duration: 1000
+      });
       navigate("/dashboard"); // Redirect if successful
     }
   };

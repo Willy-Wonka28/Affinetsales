@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import {Menu, X, User} from 'lucide-react';
+import {Menu, X, User, BellRing} from 'lucide-react';
 import {BeatLoader} from 'react-spinners';
 import Sidebar from './Sidebar';
 import {userContext} from '@/App'
@@ -19,11 +19,9 @@ const Header = () => {
 
   const sideBarRef = useRef(null);
 
-  function handleOutsideClick(e){
-    if(sideBarRef.current && !sideBarRef.current.contains(e.target)){
+  function handleOutsideClick(e: MouseEvent) {
+    if(!sideBarRef.current.contains(e.target)){
       setCollapse(false)
-    }else{
-      setCollapse(true)
     }
   }
 
@@ -47,6 +45,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           <Link to="/dashboard" className="nav-link">Home</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
+          <BellRing className="w-5 h-5" />
           <Button variant="outline" className="bg-[#F1F5F9] flex items-center gap-2">
             {/* put user first name here */}
             <span className='text-lg'>{userName ? userName : <BeatLoader color='#00D78A' loading={true} size={5} />}</span>

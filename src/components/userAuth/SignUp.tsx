@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Mail } from 'lucide-react';
+import { toast } from "@/components/ui/use-toast";
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../client/supabase.ts';
 import { MoonLoader } from  'react-spinners';
@@ -33,6 +34,11 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
   }
 
   if (data.user) {
+    toast({
+      title: "SignUp Successful",
+      description: "Welcome to Affinetsales",
+      duration: 3000
+    });
     const { error: profileError } = await supabase.from("profiles").insert([
       { user_id: data.user.id.trim(), first_name: firstName.trim(), last_name: lastName.trim(), email: email.trim() },
     ]);

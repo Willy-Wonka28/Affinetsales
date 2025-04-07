@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from "@/components/ui/use-toast";
 import { Mail } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../../client/supabase.ts';
@@ -39,7 +40,11 @@ const Login = () => {
       return false; 
     }
     else{
-  
+      toast({
+        title: "Login Successful",
+        description: "Welcome to Affinetsales",
+        duration: 3000
+      });
       return true;
     }
   

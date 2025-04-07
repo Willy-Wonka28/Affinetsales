@@ -1,5 +1,4 @@
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -14,7 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import ClassroomPage from "./pages/ClassroomPage";
 import Announcements from "./pages/Announcements";
 import TopEarners from "./pages/TopEarners";
-import Community from "./pages/Community";
+// import Community from "./pages/Community";
 import Settings from "./pages/Settings";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
@@ -35,6 +34,7 @@ const App = () => {
     <userContext.Provider value={{ userName, setUserName }}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
+          <Toaster />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Landing />} />
@@ -47,7 +47,7 @@ const App = () => {
               <Route path="/classroom" element={<Layout><ClassroomPage /></Layout>} />
               <Route path="/announcements" element={<Layout><Announcements /></Layout>} />
               <Route path="/top-earners" element={<Layout><TopEarners /></Layout>} />
-              <Route path="/community" element={<Layout><Community /></Layout>} />
+              {/* <Route path="/community" element={<Layout><Community /></Layout>} /> */}
               <Route path="/settings" element={<Layout><Settings /></Layout>} />
               <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
               <Route path="*" element={<NotFound />} />
