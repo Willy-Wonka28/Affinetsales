@@ -78,12 +78,14 @@ const Settings = () => {
       toast({
         title: 'Profile Updated',
         description: 'Your name has been updated successfully',
+        duration: 3000,
       });
     } catch (error) {
       toast({
         title: 'Update Failed',
         description: error.message,
         variant: 'destructive',
+        duration: 3000,
       });
     } finally {
       setLoading(false);
@@ -97,6 +99,7 @@ const Settings = () => {
         title: 'Invalid Email',
         description: 'Please enter a valid email address',
         variant: 'destructive',
+        duration: 3000,
       });
       return;
     }
@@ -113,6 +116,7 @@ const Settings = () => {
       toast({
         title: 'Verification Sent',
         description: 'Please check your new email to confirm the change',
+        duration: 3000,
       });
       setShowEmailForm(false);
       setEmail('');
@@ -121,6 +125,7 @@ const Settings = () => {
         title: 'Email Update Failed',
         description: error.message,
         variant: 'destructive',
+        duration: 3000,
       });
     } finally {
       setLoading(false);
@@ -134,6 +139,7 @@ const Settings = () => {
         title: 'Invalid Email',
         description: 'Please enter a valid email address',
         variant: 'destructive',
+        duration: 3000,
       });
       return;
     }
@@ -153,6 +159,7 @@ const Settings = () => {
       toast({
         title: 'Email Sent',
         description: 'Check your email for the password reset link',
+        duration: 3000,
       });
     } catch (error) {
       setPasswordMessage(`Error: ${error.message}`);
@@ -160,6 +167,7 @@ const Settings = () => {
         title: 'Failed to send reset link',
         description: error.message,
         variant: 'destructive',
+        duration: 3000,
       });
     } finally {
       setTimeout(() => {

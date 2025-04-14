@@ -27,39 +27,100 @@ const teamMembers = [
 
 const features = [
   {
-    title: "Revolutionary Technology",
-    description: "Our AI-powered platform analyzes millions of data points in real-time to provide you with actionable insights.",
+    title: "500K Money Challenge in 30 Days",
+    description: "Ready to make your first 500K? This comprehensive course dives deep into the world of affiliate marketing, revealing the strategies and secrets that can help you consistently earn up to 500K every month. Whether you're a beginner or have some experience, this challenge equips you with actionable steps and insider tips to transform your affiliate marketing journey on Affinetsales.",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
   {
-    title: "Seamless Integration",
-    description: "Connect with your existing tools and workflows without any hassle. We support all major platforms.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop"
+    title: "How to Start a Profitable WhatsApp TV Business",
+    description: "Ever wondered how to build a large, engaged audience on WhatsApp? This course unveils the powerful secrets behind growing your WhatsApp TV from scratch to over 5,000 active viewers. Learn the exact strategies that the pros won't tell you, and discover how to monetize your audience for maximum profit. This method is tried, tested, and proven to work!",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
   {
-    title: "Enterprise Security",
-    description: "Bank-grade encryption and security measures to keep your data safe and compliant with regulations.",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=400&fit=crop"
+    title: "Instagram Ads (Crazy Secret Exposed)",
+    description: "Instagram is a goldmine for marketers, and this course reveals the hidden secrets to running successful ads that convert. Learn how to create compelling ads, target the right audience, and scale your campaigns for explosive growth. By the end of this course, you'll have the tools and knowledge to dominate Instagram ads like a pro.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
+  },
+  {
+    title: "Facebook Ads Workshop",
+    description: "Facebook remains one of the most powerful advertising platforms in the world. This workshop takes you through every step of creating, optimizing, and scaling profitable Facebook ad campaigns. You'll learn how to reach your target audience, craft irresistible ads, and turn clicks into conversions. Whether you're new to Facebook ads or looking to improve your results, this course has you covered.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
+  },
+  {
+    title: "WhatsApp Automation",
+    description: "Automation is key to scaling your business, and this course shows you how to leverage WhatsApp automation to streamline your operations. Learn how to set up automated responses, schedule messages, and manage your contacts efficiently. This course is perfect for anyone looking to save time and increase productivity while still providing excellent customer service.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
+  },
+  {
+    title: "Email Marketing",
+    description: "Email marketing is still one of the most effective ways to reach your audience. This course teaches you how to build a profitable email list, craft compelling emails, and create automated campaigns that convert. Whether you're promoting products, services, or content, this course will help you master the art of email marketing.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
+  },
+  {
+    title: "Website Design",
+    description: "Your website is your digital store front, and this course teaches you how to design a professional, user-friendly site that converts visitors into customers. You'll learn the basics of website design, including layout, colour schemes, and functionality, as well as advanced tips for optimizing your site for SEO and user experience.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
+  },
+  {
+    title: "How to Create a Professional Landing Page",
+    description: "A well-designed landing page can make or break your marketing campaign. This course shows you how to create landing pages that capture attention, build trust, and drive conversions. Learn the key elements of high-converting landing pages and how to test and optimize them for maximum results.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
+  },
+  {
+    title: "Organic Lead Generation for Physical and Online Business",
+    description: "Lead generation is the lifeblood of any business, and this course teaches you how to attract and convert leads without spending a dime on ads. Learn proven strategies for generating organic traffic, building relationships, and nurturing leads until they're ready to buy. This course is ideal for entrepreneurs looking to grow their business sustainably.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
+  },
+  {
+    title: "Urgent 2K Master-class",
+    description: "Need to make some quick cash? The Urgent 2K Master-class is designed for anyone who needs to generate money fast. This course reveals strategic ways to sell valuable updates, including hacked apps and other digital products, to people willing to pay that urgent 2K. It's perfect for those who need urgent 2K to fix data or save up for ads.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   }
+  
 ];
 
 const faqs = [
   {
-    question: "How does the platform work?",
-    answer: "Our platform uses advanced AI algorithms to process and analyze data in real-time, providing instant insights and recommendations."
+    question: "How soon can I start earning money?",
+    answer: "You can begin earning as soon as you start applying the skills you learn. The more you practice, the faster you'll see results."
   },
   {
-    question: "What kind of support do you offer?",
-    answer: "We provide 24/7 customer support through multiple channels including live chat, email, and phone."
+    question: "Why is the price so affordable if the program offers so much?",
+    answer: "Over the years, we've realized that many people are passionate about learning and eager to change their financial status, but the registration fee can be a significant barrier. That’s why we’ve made the program available at this affordable price—to ensure that more people can access it. Our goal is to equip you with profitable skills that, when applied correctly, can consistently earn you between 300k-500k+ every month, even as a newbie."
   },
-  {
-    question: "Is my data secure?",
-    answer: "Yes, we use enterprise-grade encryption and follow strict security protocols to protect your data."
-  },
-  {
-    question: "Can I integrate with other tools?",
-    answer: "Absolutely! We offer seamless integration with most popular business tools and platforms."
-  }
+{
+  question: "Is there any guarantee of success?",
+  answer: "We don't offer guarantees because your results will depend on your commitment to applying what you learn. The knowledge we provide is powerful, but its effectiveness is up to you. However, if you can follow our step-by-step guide, there’s a strong chance that making money online will simply be a matter of applying the secrets we’ll expose you to on our platform."
+},
+{
+  question: "What if I need help during the training?",
+  answer: "We provide ongoing support to help you through any challenges. If you have questions or need clarification, our team is here to guide you every step of the way."
+},
+{
+  question: "How do I know this is legitimate?",
+  answer: "We are registered with the Corporate Affairs Commission (CAC) and the Economic and Financial Crimes Commission (EFCC). We're also committed to teaching you practical skills that you can immediately apply. This isn't about quick fixes or false promises; your success depends on your effort and application of what you learn."
+},
+{
+  question: "Where will the training take place?",
+  answer: "The training sessions are hosted in the classroom section on our platform. You'll need your smartphone and an internet connection to access the classes and materials. We also offer extra classes on WhatsApp, YouTube live sessions, and you will have access to Free Mentorship all through as a registered member."
+},
+{
+  question: "Do I need a laptop or computer for the training?",
+  answer: "A smartphone is sufficient for most of the tasks you'll be learning. Our courses are designed to be accessible, regardless of your device."
+},
+{
+  question: "How long will the training take?",
+  answer: "The training is delivered through pre-recorded videos that you can watch at your convenience. This allows you to learn at your own pace, whenever you have the time."
+},
+{
+  question: "What makes this course different from others?",
+  answer: "We've designed our program to be as beginner-friendly as possible. Many of our trainers started from scratch themselves, so they understand the challenges you'll face and how to overcome them."
+},
+{
+  question: "After the registration fee, will I need to pay any additional fees",
+  answer: "No, you won't be required to pay any additional fees. The registration fee is a one-time payment that grants you access to all the courses and lifetime online training with us, as long as you remain a registered member of Affinetsales."
+}
+
 ];
 
 function Landing() {
@@ -82,7 +143,9 @@ function Landing() {
 
             
             <div className="hidden md:flex items-center">
+            <a href="#about" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">About Us</a>
               <a href="#team" className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Team</a>
+              <a href="#courses" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Courses</a>
               <a href="#contact" className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</a>
               <NavLink to="/Login"className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">
                 Login
@@ -104,7 +167,9 @@ function Landing() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <a href="#about" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">About Us</a>
               <a href="#team" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Team</a>
+              <a href="#courses" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Courses</a>
               <NavLink to="" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</NavLink>
               <button className="block w-full px-4 py-2 text-[#170C32] hover:text-[#00D78A]">
                 Login
@@ -158,10 +223,28 @@ function Landing() {
       </div>
     </section>
 
-      {/* Team Section */}
-      <section id="team" className="py-20 bg-gray-50">
+    {/* About Section */}
+    <section id="about" className="">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center text-[#170C32] mb-16">Meet Our Team</h2>
+        <h2 className="text-4xl font-bold text-center text-[#170C32] mb-14">About Us</h2>
+        <div>
+          <p className='text-lg text-center px-16 text-gray-600'>
+            In a world where the cost of living keeps rising, it can feel impossible to stay ahead.
+            But with Affinetsales, you can turn this challenge into an opportunity. We’re here to
+            help you not only keep up but excel.
+            At Affinetsales, we believe that financial independence is within everyone's reach.
+            Our platform is designed to provide you with the skills and strategies needed to
+            generate significant income online. From learning digital skills to reaching out to
+            customers who are ready to pay well, and even mastering the secrets of closing sales
+            as an affiliate marketer—we cover it all.</p>
+        </div>
+        </div>
+    </section>
+
+      {/* Team Section */}
+      <section id="team" className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-center text-[#170C32] mb-14">Meet Our Team</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {teamMembers.map((member, index) => (
               <div
@@ -185,9 +268,9 @@ function Landing() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20">
+      <section id="courses" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-center text-[#170C32] mb-16">How It Works</h2>
+          <h2 className="text-4xl font-bold text-center text-[#170C32] mb-16">Course Catalog</h2>
           <div className="space-y-12">
             {features.map((feature, index) => (
               <div

@@ -11,17 +11,14 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col bg-brand-blue rounded-lg text-white py-4 px-4 md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back to your dashboard!</p>
+          <h1 className="text-3xl font-bold text-white">Good day, {userName}</h1>
+          <p className="text-white text-muted-foreground">Welcome back to your dashboard!</p>
         </div>
-        <Button className="bg-brand-green hover:bg-brand-green/90">
-          Get Access
-        </Button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">Course Progress</CardTitle>
@@ -52,31 +49,6 @@ const Dashboard = () => {
                 </svg>
                 12% from last month
               </span>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Upcoming Sessions</CardTitle>
-            <CardDescription>Your scheduled live sessions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">Advanced Marketing</p>
-                  <p className="text-sm text-muted-foreground">Today, 3:00 PM</p>
-                </div>
-                <Button variant="outline" size="sm">Join</Button>
-              </div>
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="font-medium">Q&A Session</p>
-                  <p className="text-sm text-muted-foreground">Tomorrow, 1:00 PM</p>
-                </div>
-                <Button variant="outline" size="sm">Join</Button>
-              </div>
             </div>
           </CardContent>
         </Card>
