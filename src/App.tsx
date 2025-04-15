@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -94,21 +94,19 @@ const App = () => {
   }, []);
 
   // PrivateRoute component that wraps any route and handles the redirection logic
+  
   const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-    const navigate = useNavigate();
     if (!isAuthenticated) {
-      navigate('/signup'); // Redirect to signup if not authenticated
-      return null;
+      return <Navigate to="/signup" replace />;
     }
-
+  
     if (!isVerified) {
-      navigate('/redirect'); // Redirect if email is not verified
-      return null;
+      return <Navigate to="/redirect" replace />;
     }
-
+  
     return children;
   };
-
+  
   return (
     <userContext.Provider value={{ userName: userName, setUserName }}>
       <QueryClientProvider client={queryClient}>
