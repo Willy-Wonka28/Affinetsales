@@ -81,7 +81,7 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
     setLoading(false); // Hide spinner
 
     if (success) {
-      navigate("/dashboard"); // Redirect if signup is successful
+      navigate("/"); // Redirect if signup is successful
     }
   };
 
