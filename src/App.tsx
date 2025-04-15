@@ -9,6 +9,7 @@ import SignUp from "./components/userAuth/SignUp";
 import ResetPassword from "./components/userAuth/ResetPassword";
 import ForgotPassword from "./components/userAuth/ForgotPassword";
 import VerifyEmail from "./components/userAuth/VerifyEmail";
+import EmailCheck from "./pages/EmailCheck";
 import Dashboard from "./pages/Dashboard";
 import ClassroomPage from "./pages/ClassroomPage";
 import Announcements from "./pages/Announcements";
@@ -120,6 +121,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/verify" element={<VerifyEmail />} />
+              <Route path="/verify-email" element={<EmailCheck />} />
               <Route path="/redirect" element={<Redirect />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
