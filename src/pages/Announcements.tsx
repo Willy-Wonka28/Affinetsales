@@ -10,6 +10,8 @@ const Announcements = () => {
   const response = useQuery({
     queryKey: ["ann"],
     queryFn: getAnnouncements,
+    refetchInterval: 100000,
+    staleTime: 120000
   });
   
   async function getAnnouncements() {

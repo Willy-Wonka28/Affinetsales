@@ -14,7 +14,7 @@ const Dashboard = () => {
       <div className="flex flex-col bg-brand-blue rounded-lg text-white py-4 px-4 md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Good day, {userName}</h1>
-          <p className="text-white text-muted-foreground">Welcome back to your dashboard!</p>
+          <p className="text-white text-muted-foreground">Welcome to your dashboard!</p>
         </div>
       </div>
       
@@ -84,31 +84,9 @@ const Dashboard = () => {
                   <span className="mr-2">–</span>
                   <span>How to Unban Any Banned WhatsApp Account</span>
                 </li>
-                <li className="flex items-center">
-                  <span className="mr-2">–</span>
-                  <span>and many more!</span>
-                </li>
               </ul>
-              <Button className="mt-6 bg-brand-green hover:bg-brand-green/90">
-                Get Access
-              </Button>
             </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">Latest Announcements</h3>
-              <div className="space-y-4">
-                <div className="border rounded-md p-4">
-                  <p className="font-medium">New Course Released</p>
-                  <p className="text-sm text-muted-foreground">We've just released a new course on advanced affiliate marketing strategies.</p>
-                  <p className="text-xs text-muted-foreground mt-2">2 days ago</p>
-                </div>
-                <div className="border rounded-md p-4">
-                  <p className="font-medium">Platform Maintenance</p>
-                  <p className="text-sm text-muted-foreground">The platform will be undergoing maintenance this weekend. Please plan accordingly.</p>
-                  <p className="text-xs text-muted-foreground mt-2">5 days ago</p>
-                </div>
-              </div>
             </div>
-          </div>
         </CardContent>
       </Card>
     </div>

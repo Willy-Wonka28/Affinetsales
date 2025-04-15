@@ -1,7 +1,7 @@
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./pages/Landing";
 import Login from "./components/userAuth/Login";
@@ -13,10 +13,11 @@ import Dashboard from "./pages/Dashboard";
 import ClassroomPage from "./pages/ClassroomPage";
 import Announcements from "./pages/Announcements";
 import TopEarners from "./pages/TopEarners";
-// import Community from "./pages/Community";
 import Settings from "./pages/Settings";
 import ContactPage from "./pages/ContactPage";
+import ConnectPage from "./pages/ConnectPage";
 import NotFound from "./pages/NotFound";
+import Redirect from "./pages/Redirect";
 import { createContext, useState, useEffect } from "react";
 import { supabase } from '@/client/supabase';
 
@@ -25,16 +26,16 @@ interface UserContextType {
   setUserName: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-
 const queryClient = new QueryClient();
 export const userContext = createContext<UserContextType>({
   userName: null,
-  setUserName: ()=>{}
+  setUserName: () => {}
 });
+
 const App = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-
+  const [isVerified, setIsVerified] = useState<boolean>(false); 
 
   useEffect(() => {
     const checkSession = async () => {
@@ -44,15 +45,22 @@ const App = () => {
       if (session) {
         setIsAuthenticated(true);
         const firstName = session.user.user_metadata?.first_name;
-        console.log(firstName);
         if (firstName) {
           setUserName(firstName);
         }
+
+        // Check if email is verified
+        if (session.user.email_confirmed_at || session.user.app_metadata?.email_confirmed_at) {
+          setIsVerified(true);
+        } else {
+          setIsVerified(false);
+        }
+      } else {
+        setIsAuthenticated(false);
       }
-      
     };
 
-    //auth state listener
+    // auth state listener
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         console.log('Auth state changed:', event);
@@ -63,19 +71,19 @@ const App = () => {
           if (firstName) {
             setUserName(firstName);
           }
+
+          if (session.user.email_confirmed_at || session.user.app_metadata?.email_confirmed_at) {
+            setIsVerified(true);
+          } else {
+            setIsVerified(false);
+          }
         } else if (event === 'SIGNED_OUT') {
           setIsAuthenticated(false);
           setUserName(null);
-        } else if (event === 'USER_UPDATED' && session) {
-
-          const firstName = session.user.user_metadata?.first_name;
-          if (firstName) {
-            setUserName(firstName);
-          }
+          setIsVerified(false);
         }
       }
     );
-
 
     checkSession();
 
@@ -85,6 +93,22 @@ const App = () => {
     };
   }, []);
 
+  // PrivateRoute component that wraps any route and handles the redirection logic
+  const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+    const navigate = useNavigate();
+    if (!isAuthenticated) {
+      navigate('/signup'); // Redirect to signup if not authenticated
+      return null;
+    }
+
+    if (!isVerified) {
+      navigate('/redirect'); // Redirect if email is not verified
+      return null;
+    }
+
+    return children;
+  };
+
   return (
     <userContext.Provider value={{ userName: userName, setUserName }}>
       <QueryClientProvider client={queryClient}>
@@ -92,18 +116,23 @@ const App = () => {
           <Toaster />
           <BrowserRouter>
             <Routes>
+              {/* Public Routes */}
               <Route path="/" element={<Landing />} />
-              <Route path="/Login" element={<Login />} />
-              <Route path="/SignUp" element={<SignUp />} />
+              <Route path="/connect" element={<ConnectPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/verify" element={<VerifyEmail />} />
+              <Route path="/redirect" element={<Redirect />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
-              <Route path="/classroom" element={<Layout><ClassroomPage /></Layout>} />
-              <Route path="/announcements" element={<Layout><Announcements /></Layout>} />
-              <Route path="/top-earners" element={<Layout><TopEarners /></Layout>} />
-              {/* <Route path="/community" element={<Layout><Community /></Layout>} /> */}
-              <Route path="/settings" element={<Layout><Settings /></Layout>} />
+              
+              {/* Protected Routes (only for authenticated and verified users) */}
+              <Route path="/dashboard" element={<PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>} />
+              <Route path="/classroom" element={<PrivateRoute><Layout><ClassroomPage /></Layout></PrivateRoute>} />
+              <Route path="/announcements" element={<PrivateRoute><Layout><Announcements /></Layout></PrivateRoute>} />
+              <Route path="/top-earners" element={<PrivateRoute><Layout><TopEarners /></Layout></PrivateRoute>} />
+              <Route path="/settings" element={<PrivateRoute><Layout><Settings /></Layout></PrivateRoute>} />
+              
               <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -113,6 +142,5 @@ const App = () => {
     </userContext.Provider>
   );
 };
-
 
 export default App;

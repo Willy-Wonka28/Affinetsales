@@ -2,6 +2,8 @@ import React from 'react';
 import { Menu, X, ChevronDown, ArrowRight, BadgeCheck } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import {TestimonialCard} from  '@/components/TestimonialCard';
+import filler_image from '/img/filler_image.webp';
 
 
 const teamMembers = [
@@ -9,7 +11,7 @@ const teamMembers = [
     name: "Sarah Johnson",
     role: "Coach",
     bio: "Former fintech executive with 15 years of experience in digital transformation",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop"
+    image: filler_image
   },
   {
     name: "Ogbeide Oluwatobi",
@@ -21,62 +23,41 @@ const teamMembers = [
     name: "Elena Rodriguez",
     role: "Coach",
     bio: "Award-winning UX designer passionate about creating intuitive experiences",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop"
+    image: filler_image
   }
 ];
 
 const features = [
   {
-    title: "500K Money Challenge in 30 Days",
+    title: "500K in 30 Days Challenge – Fast & Easy Blueprint",
     description: "Ready to make your first 500K? This comprehensive course dives deep into the world of affiliate marketing, revealing the strategies and secrets that can help you consistently earn up to 500K every month. Whether you're a beginner or have some experience, this challenge equips you with actionable steps and insider tips to transform your affiliate marketing journey on Affinetsales.",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
   {
-    title: "How to Start a Profitable WhatsApp TV Business",
+    title: "Start WhatsApp TV Business & Earn 300K+ Monthly",
     description: "Ever wondered how to build a large, engaged audience on WhatsApp? This course unveils the powerful secrets behind growing your WhatsApp TV from scratch to over 5,000 active viewers. Learn the exact strategies that the pros won't tell you, and discover how to monetize your audience for maximum profit. This method is tried, tested, and proven to work!",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
   {
-    title: "Instagram Ads (Crazy Secret Exposed)",
+    title: "Instagram Ads Exposed – Secrets the Gurus Don’t Tell You",
     description: "Instagram is a goldmine for marketers, and this course reveals the hidden secrets to running successful ads that convert. Learn how to create compelling ads, target the right audience, and scale your campaigns for explosive growth. By the end of this course, you'll have the tools and knowledge to dominate Instagram ads like a pro.",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
   {
-    title: "Facebook Ads Workshop",
+    title: "Step-by-Step Facebook Ads That Actually Convert",
     description: "Facebook remains one of the most powerful advertising platforms in the world. This workshop takes you through every step of creating, optimizing, and scaling profitable Facebook ad campaigns. You'll learn how to reach your target audience, craft irresistible ads, and turn clicks into conversions. Whether you're new to Facebook ads or looking to improve your results, this course has you covered.",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
   {
-    title: "WhatsApp Automation",
+    title: "WhatsApp Automation Secrets – Save Time & Close More Sales",
     description: "Automation is key to scaling your business, and this course shows you how to leverage WhatsApp automation to streamline your operations. Learn how to set up automated responses, schedule messages, and manage your contacts efficiently. This course is perfect for anyone looking to save time and increase productivity while still providing excellent customer service.",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
   {
-    title: "Email Marketing",
-    description: "Email marketing is still one of the most effective ways to reach your audience. This course teaches you how to build a profitable email list, craft compelling emails, and create automated campaigns that convert. Whether you're promoting products, services, or content, this course will help you master the art of email marketing.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
-  },
-  {
-    title: "Website Design",
-    description: "Your website is your digital store front, and this course teaches you how to design a professional, user-friendly site that converts visitors into customers. You'll learn the basics of website design, including layout, colour schemes, and functionality, as well as advanced tips for optimizing your site for SEO and user experience.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
-  },
-  {
-    title: "How to Create a Professional Landing Page",
-    description: "A well-designed landing page can make or break your marketing campaign. This course shows you how to create landing pages that capture attention, build trust, and drive conversions. Learn the key elements of high-converting landing pages and how to test and optimize them for maximum results.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
-  },
-  {
-    title: "Organic Lead Generation for Physical and Online Business",
+    title: "Dominate TikTok Ads – From Beginner to Expert",
     description: "Lead generation is the lifeblood of any business, and this course teaches you how to attract and convert leads without spending a dime on ads. Learn proven strategies for generating organic traffic, building relationships, and nurturing leads until they're ready to buy. This course is ideal for entrepreneurs looking to grow their business sustainably.",
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
   },
-  {
-    title: "Urgent 2K Master-class",
-    description: "Need to make some quick cash? The Urgent 2K Master-class is designed for anyone who needs to generate money fast. This course reveals strategic ways to sell valuable updates, including hacked apps and other digital products, to people willing to pay that urgent 2K. It's perfect for those who need urgent 2K to fix data or save up for ads.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=400&fit=crop"
-  }
-  
 ];
 
 const faqs = [
@@ -146,7 +127,7 @@ function Landing() {
             <a href="#about" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">About Us</a>
               <a href="#team" className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Team</a>
               <a href="#courses" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Courses</a>
-              <a href="#contact" className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</a>
+              <NavLink to="/connect" className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</NavLink>
               <NavLink to="/Login"className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">
                 Login
              </NavLink>
@@ -167,16 +148,16 @@ function Landing() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <a href="#about" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">About Us</a>
-              <a href="#team" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Team</a>
-              <a href="#courses" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Courses</a>
-              <NavLink to="" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</NavLink>
-              <button className="block w-full px-4 py-2 text-[#170C32] hover:text-[#00D78A]">
+              <a href="https://affinetsales.vercel.app/#about" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">About Us</a>
+              <a href="https://affinetsales.vercel.app/#team" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Team</a>
+              <a href="https://affinetsales.vercel.app/#courses" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Our Courses</a>
+              <NavLink to="/connect" className="px-4 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">Contact</NavLink>
+              <NavLink to="/Login"className="px-6 py-2 text-[#170C32] hover:text-[#00D78A] transition-colors">
                 Login
-              </button>
-              <button className="block w-full px-4 py-2 bg-[#00D78A] text-white rounded-lg">
+             </NavLink>
+              <NavLink to="/SignUp" className="px-4 py-2 bg-[#00D78A] text-white rounded-lg hover:bg-opacity-90 transition-colors">
                 Sign Up
-              </button>
+              </NavLink>
             </div>
           </div>
         )}
@@ -292,6 +273,31 @@ function Landing() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 className="text-4xl font-bold text-center text-[#170C32] mb-14">Testimonials</h2>
+      <div className="grid md:grid-cols-3 gap-6 px-8">
+      <TestimonialCard
+        name="Favour"
+        position="Student"
+        quote="I had the privilege of Oluwatobi(Brains TV) three years ago, and it was a turning point in my life. Through his guidance, I acquired a range of valuable skills and discovered the world of affiliate marketing. I also started earning a steady income alongside him. His mentorship and expertise in affiliate marketing have been instrumental."
+      />
+                
+      <TestimonialCard
+        name="Ayo"
+        position="Founder, Ayomzzy Tech/Media"
+        quote="I made 1 million in 3 months after learning affiliate marketing from Oluwatobi. One key thing I learned from him turned me into the millionaire I am today."
+      />
+                
+      <TestimonialCard
+        name="Jennifer"
+        position="Student"
+        quote="I've always wanted to make money online but was scared of getting scammed until I met Brains TV. At first, I had my doubts, but he proved them wrong. I made my first 30k within a few days of working with him, and I've never regretted it since."
+      />
+          </div>    
+          </div>
       </section>
 
       {/* FAQ Section */}
