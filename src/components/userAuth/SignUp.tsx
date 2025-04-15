@@ -58,8 +58,8 @@ async function handleSignUp({ email, password, firstName, lastName }: User): Pro
     setUserName(firstName);
     toast({
       title: "SignUp Successful",
-      description: "Welcome to Affinetsales. Check your email to verify your account",  
-      duration: 2000
+      description: "Welcome to Affinetsales. Check your email to verify your account and log in",  
+      duration: 4000
     });
     console.log("Profile created successfully!");
 

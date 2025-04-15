@@ -34,8 +34,8 @@ export const userContext = createContext<UserContextType>({
 
 const App = () => {
   const [userName, setUserName] = useState<string | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isVerified, setIsVerified] = useState<boolean>(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isVerified, setIsVerified] = useState<boolean | null>(null); 
 
   useEffect(() => {
     const checkSession = async () => {
@@ -99,14 +99,14 @@ const App = () => {
     if (!isAuthenticated) {
       return <Navigate to="/signup" replace />;
     }
-  
+
     if (!isVerified) {
       return <Navigate to="/redirect" replace />;
     }
-  
+
     return children;
   };
-  
+
   return (
     <userContext.Provider value={{ userName: userName, setUserName }}>
       <QueryClientProvider client={queryClient}>

@@ -54,8 +54,8 @@ const VerifyEmail = () => {
         </div>
       )}
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
-        
-      <h1 className="text-2xl font-semibold pb-3">Verify your email address</h1>
+      <h1 className="text-2xl font-semibold pb-3">Your email is not verified.</h1>
+      <h1 className="text-2xl font-semibold pb-3">Please, verify your email address</h1>
 
         <form className="space-y-4">
           <div className="relative">
